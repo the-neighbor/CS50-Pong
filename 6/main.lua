@@ -33,7 +33,7 @@ function love.load()
    --]]
    --seed RNG with the current epoch time which will be unique each time the game is run
    math.randomseed(os.time())
-
+   love.window.setTitle("Pong")
    love.graphics.setDefaultFilter('nearest', 'nearest')
    smallFont = love.graphics.newFont('font.ttf', 8)
    largeFont = love.graphics.newFont('font.ttf', 32)
@@ -96,6 +96,27 @@ function love.update(dt)
    end
 end
 
+function displayFPS()
+   love.graphics.setColor(0,1,0,1) --set drawing color to green
+   love.graphics.setFont(smallFont) --set font to small
+   love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 40, 20) --print fps
+end
+
+function displayScores()
+   love.graphics.setColor(1,1,1,1) --set drawing color to white
+   love.graphics.setFont(largeFont) --set font to large
+   --print player 1 score
+   love.graphics.print(player1Score, VIRTUAL_WIDTH/2 - 50, VIRTUAL_HEIGHT / 3)
+   --print player 2 score
+   love.graphics.print(player2Score, VIRTUAL_WIDTH/2 + 30, VIRTUAL_HEIGHT / 3)
+end
+
+function displayMessage()
+   love.graphics.setColor(1,1,1,1) --set drawing color to white
+   love.graphics.setFont(smallFont) --set font to small
+   love.graphics.printf(message, 0, 20, VIRTUAL_WIDTH, 'center') --print state message
+end
+
 function love.draw()
    --[[
       1. clear screen with love.graphics.clear()
@@ -112,11 +133,9 @@ function love.draw()
    paddle1:render()
    paddle2:render()
    --draw text
-   love.graphics.setFont(smallFont)
-   love.graphics.printf(message, 0, 20, VIRTUAL_WIDTH, 'center')
-   love.graphics.setFont(largeFont)
-   love.graphics.print(player1Score, VIRTUAL_WIDTH/2 - 50, VIRTUAL_HEIGHT / 3)
-   love.graphics.print(player2Score, VIRTUAL_WIDTH/2 + 30, VIRTUAL_HEIGHT / 3)
+   displayMessage()
+   displayScores()
+   displayFPS()
    --end call to virtual resolution library
    push:apply('end')
 end
